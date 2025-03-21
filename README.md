@@ -1,1 +1,0 @@
-# eks-cluster-automation

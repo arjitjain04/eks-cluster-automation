@@ -1,0 +1,39 @@
+name: Deploy Pulumi EKS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install AWS CLI & Pulumi
+        run: |
+          curl -fsSL https://get.pulumi.com | sh
+          echo "$HOME/.pulumi/bin" >> $GITHUB_PATH
+          sudo apt install awscli -y
+
+      - name: Configure AWS Credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region us-east-1
+
+      - name: Install Python & Dependencies
+        run: |
+          sudo apt install python3-pip -y
+          pip install pulumi pulumi-aws pulumi-eks
+
+      - name: Pulumi Login
+        run: pulumi login --cloud-url https://api.pulumi.com
+
+      - name: Deploy AWS EKS with Pulumi
+        run: |
+          pulumi stack select eks-001 || pulumi stack init eks-001
+          pulumi up --yes
