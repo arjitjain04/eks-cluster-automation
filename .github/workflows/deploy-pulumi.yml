@@ -6,18 +6,18 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      destroy_confirm:
-        description: "Are you sure you want to destroy the EKS cluster?"
+      job_to_run:
+        description: "Select the job to run"
         required: true
-        default: "no"
+        default: "none"
         type: choice
         options:
-          - "no"
-          - "yes"
+          - "destroy"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -60,7 +60,7 @@ jobs:
 
   destroy:
     runs-on: ubuntu-latest
-    if: github.event.inputs.destroy_confirm == 'yes'  # ✅ Runs only if 'yes' is selected
+    if: if: github.event_name == 'workflow_dispatch' && github.event.inputs.job_to_run == 'destroy'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
