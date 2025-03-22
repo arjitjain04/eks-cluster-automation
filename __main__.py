@@ -3,7 +3,7 @@ from components.iam import IAM
 from components.network import Network
 from components.eks_cluster import EksCluster
 from confighandler.confighandler import EKSConfigHandler
-from confValidation.validations import validate_config
+from confValidaion.validation import validate_config
 
 config_handler = EKSConfigHandler()
 cluster_vars = config_handler.handle_cluster_config()
