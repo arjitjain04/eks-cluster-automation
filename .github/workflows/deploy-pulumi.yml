@@ -4,7 +4,16 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # 🛠️ Allows manual trigger for destroy job
+  workflow_dispatch:
+    inputs:
+      destroy_confirm:
+        description: "Are you sure you want to destroy the EKS cluster?"
+        required: true
+        default: "no"
+        type: choice
+        options:
+          - "no"
+          - "yes"
 
 jobs:
   deploy:
@@ -47,11 +56,11 @@ jobs:
       - name: Deploy AWS EKS with Pulumi
         run: |
           pulumi stack select arjitjain/eks-cluster/eks-001 || pulumi stack init arjitjain/eks-cluster/eks-001
-          pulumi up --yes
+          pulumi up --yes --color=always
 
   destroy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'  # 🛑 Only runs when manually triggered
+    if: github.event.inputs.destroy_confirm == 'yes'  # ✅ Runs only if 'yes' is selected
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
