@@ -2,14 +2,12 @@ import pulumi
 from components.iam import IAM
 from components.network import Network
 from components.eks_cluster import EksCluster
-from components.monitoring import Monitoring
 from components.kubeflow import KubeflowOperator
 from confighandler.confighandler import EKSConfigHandler
 from confValidation.validations import validate_config
 
 config_handler = EKSConfigHandler()
 cluster_vars = config_handler.handle_cluster_config()
-monitoring_vars = config_handler.handle_monitoring_config()
 
 validate_config(
     cluster_vars["desired_cpu_node_count"],
