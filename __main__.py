@@ -2,7 +2,6 @@ import pulumi
 from components.iam import IAM
 from components.network import Network
 from components.eks_cluster import EksCluster
-from components.kubeflow import KubeflowOperator
 from confighandler.confighandler import EKSConfigHandler
 from confValidation.validations import validate_config
 
