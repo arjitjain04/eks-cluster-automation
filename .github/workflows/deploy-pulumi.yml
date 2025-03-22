@@ -60,7 +60,7 @@ jobs:
 
   destroy:
     runs-on: ubuntu-latest
-    if: if: github.event_name == 'workflow_dispatch' && github.event.inputs.job_to_run == 'destroy'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.job_to_run == 'destroy'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
