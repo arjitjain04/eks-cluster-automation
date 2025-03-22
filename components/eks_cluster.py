@@ -72,8 +72,6 @@ class EksCluster(pulumi.ComponentResource):
         self.cluster = self._create_eks_cluster()
         self.k8s_provider = self._create_kubernetes_provider()
         self._create_managed_node_groups()
-        self._create_cluster_addons()
-        self._install_gpu_operator()
 
     def _create_eks_cluster(self):
         kms_key = aws.kms.Key(
